@@ -9,7 +9,10 @@ import path from "path";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
+import postRoutes from "./routes/posts.js";
 import { signUp } from "./controllers/auth.js";
+import { createPost } from "./controllers/posts.js";
+import { verifyToken } from "./middleware/auth.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -37,11 +40,12 @@ const upload = multer({ storage });
 
 //for signUp
 app.post("/auth/signUp", upload.single("picture"), signUp);
+app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 //routes
-//for authentication and login
-app.use("/auth", authRoutes);
-app.use("/users",userRoutes);
+app.use("/auth", authRoutes);//for authentication and login
+app.use("/users", userRoutes);//users
+app.use("/posts", postRoutes);//post routes
 
 
 main().catch(err => console.log(err));
