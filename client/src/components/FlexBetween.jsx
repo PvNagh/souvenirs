@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 
+//resuable content
 const FlexBetween = styled(Box)({
   display: "flex",
   justifyContent: "space-between",

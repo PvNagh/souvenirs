@@ -4,7 +4,7 @@ import User from "../models/User.js";
 
 //signUp 
 
-export const signUp = async (req, res) => {
+export const register = async (req, res) => {
   try {
     const {
       firstName,

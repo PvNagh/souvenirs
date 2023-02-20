@@ -11,13 +11,15 @@ import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import postRoutes from "./routes/posts.js";
-import { signUp } from "./controllers/auth.js";
+import { register } from "./controllers/auth.js";
 import { createPost } from "./controllers/posts.js";
 import { verifyToken } from "./middleware/auth.js";
 
+dotenv.config();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-dotenv.config();
+
 const app = express();
 app.set('view engine', 'ejs');
 app.use(helmet());
@@ -27,6 +29,23 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(bodyParser.json({ limit: '30mb', extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
+
+const Connection = async (url) => {
+  const URL = url;
+  mongoose.set('strictQuery', false);
+  try {
+    await mongoose.connect(URL,
+      {
+        useUnifiedTopology: true,
+        useNewUrlParser: true
+      });
+    console.log('Database Connected Succesfully');
+  } catch (error) {
+    console.log('Error: ', error.message);
+  }
+};
+
+Connection(process.env.ATLAS_URL);
 
 //for image storing in local storage
 const storage = multer.diskStorage({
@@ -40,7 +59,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 //for signUp
-app.post("/auth/signUp", upload.single("picture"), signUp);
+app.post("/auth/register", upload.single("picture"), register);
 app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 //routes
@@ -48,19 +67,6 @@ app.use("/auth", authRoutes);//for authentication and login
 app.use("/users", userRoutes);//users
 app.use("/posts", postRoutes);//post routes
 
-
-main().catch(err => console.log(err));
-
-async function main() {
-
-  mongoose.set('strictQuery', false);
-  await mongoose.connect(process.env.ATLAS_URL,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
-
-  app.listen(process.env.PORT || 5000, function () {
-    console.log("Server started.");
-  });
-}
+app.listen(process.env.PORT || 6001, function () {
+  console.log("Server started.");
+});
