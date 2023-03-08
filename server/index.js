@@ -11,14 +11,13 @@ import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import postRoutes from "./routes/posts.js";
+import { getImage } from './controllers/image.js';
 import { register } from "./controllers/auth.js";
 import { createPost } from "./controllers/posts.js";
 import { verifyToken } from "./middleware/auth.js";
+import { GridFsStorage } from "multer-gridfs-storage";
 
 dotenv.config();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -28,7 +27,6 @@ app.use(morgan("common"));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(bodyParser.json({ limit: '30mb', extended: true }));
 app.use(cors());
-app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
 const Connection = async (url) => {
   const URL = url;
@@ -47,19 +45,28 @@ const Connection = async (url) => {
 
 Connection(process.env.ATLAS_URL);
 
-//for image storing in local storage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/assets");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
+const url = process.env.ATLAS_URL;
+const storage = new GridFsStorage({
+  url: `${url}`,
+  options: { useNewUrlParser: true, useUnifiedTopology: true },
+  file: (request, file) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg' || file.mimetype === 'image/png')
+      return `${file.originalname}`;
+
+    return {
+      bucketName: "photos",
+      filename: `${file.originalname}`
+    }
+  }
 });
+
 const upload = multer({ storage });
 
 //for signUp
 app.post("/auth/register", upload.single("picture"), register);
+
+//getting the image file
+app.get("/file/:filename", getImage);
 app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 //routes
