@@ -6,8 +6,6 @@ import multer from "multer";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import morgan from "morgan";
-import path from "path";
-import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import postRoutes from "./routes/posts.js";
