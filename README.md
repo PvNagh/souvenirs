@@ -1,5 +1,5 @@
 # Souvenirs
-### Full-stack MERN Social media app.
+### Full-stack Social media application.
 ### Live site : https://souvenirs-front.vercel.app
 
 ---
