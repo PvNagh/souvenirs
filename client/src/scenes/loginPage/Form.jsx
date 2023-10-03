@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
+import { back_url } from "utils/config";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -23,7 +24,7 @@ const registerSchema = yup.object().shape({
   password: yup.string().required("required"),
   location: yup.string().required("required"),
   occupation: yup.string().required("required"),
-  picture: yup.string().required("required"),
+  picture: yup.string(),
 });
 
 const loginSchema = yup.object().shape({
@@ -60,11 +61,11 @@ const Form = () => {
     for (let value in values) {
       formData.append(value, values[value]);
     }
-    formData.append("picturePath", values.picture.name);
+    formData.append("picturePath", values.picture?.name);
 
     console.log(formData)
     const savedUserResponse = await fetch(
-      "http://localhost:3006/auth/register",
+      `${back_url}/auth/register`,
       {
         method: "POST",
         body: formData,
@@ -79,7 +80,7 @@ const Form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("http://localhost:3006/auth/login", {
+    const loggedInResponse = await fetch(`${back_url}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
@@ -135,6 +136,7 @@ const Form = () => {
                   onChange={handleChange}
                   value={values.firstName}
                   name="firstName"
+                  required="true"
                   error={
                     Boolean(touched.firstName) && Boolean(errors.firstName)
                   }
@@ -147,6 +149,7 @@ const Form = () => {
                   onChange={handleChange}
                   value={values.lastName}
                   name="lastName"
+                  required="true"
                   error={Boolean(touched.lastName) && Boolean(errors.lastName)}
                   helperText={touched.lastName && errors.lastName}
                   sx={{ gridColumn: "span 2" }}
@@ -157,6 +160,7 @@ const Form = () => {
                   onChange={handleChange}
                   value={values.location}
                   name="location"
+                  required="true"
                   error={Boolean(touched.location) && Boolean(errors.location)}
                   helperText={touched.location && errors.location}
                   sx={{ gridColumn: "span 4" }}
@@ -167,6 +171,7 @@ const Form = () => {
                   onChange={handleChange}
                   value={values.occupation}
                   name="occupation"
+                  required="true"
                   error={
                     Boolean(touched.occupation) && Boolean(errors.occupation)
                   }

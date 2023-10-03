@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-
+import { back_url } from "utils/config";
 const UserImage = ({ image, size = "60px" }) => {
   return (
     <Box width={size} height={size}>
@@ -7,8 +7,8 @@ const UserImage = ({ image, size = "60px" }) => {
         style={{ objectFit: "cover", borderRadius: "50%" }}
         width={size}
         height={size}
-        alt="user"
-        src={`http://localhost:3006/file/${image}`}
+        src={image==="" ? "../assets/default_user.jpg" : `${back_url}/file/${image}` }
+        alt="User"
       />
     </Box>
   );

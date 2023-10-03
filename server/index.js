@@ -72,6 +72,6 @@ app.use("/auth", authRoutes);//for authentication and login
 app.use("/users", userRoutes);//users
 app.use("/posts", postRoutes);//post routes
 
-app.listen(process.env.PORT || 6001, function () {
+app.listen(process.env.PORT, function () {
   console.log("Server started.");
 });
