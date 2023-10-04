@@ -1,12 +1,13 @@
 # Souvenirs
-### Full-stack Social media application.
-### Live site : https://souvenirs-front.vercel.app
+### Full-stack media sharing app.
+### Live site : https://souvenirs-beige.vercel.app
 
 ---
 
-![image](https://user-images.githubusercontent.com/120133552/232486819-fc4ced4b-d28d-4f53-b2aa-9a75b45b29b3.png)
+![image](https://github.com/PvNagh/souvenirs/assets/120133552/713793bb-cfff-4229-8467-68bf9eed31d7)
 
 ---
 
-![image](https://user-images.githubusercontent.com/120133552/232487354-2b114c14-7311-4b02-9e6d-cc34479c5b72.png)
+![image](https://github.com/PvNagh/souvenirs/assets/120133552/71d04be3-c2e6-4f19-b7be-e8ada2b3d921)
+
 
